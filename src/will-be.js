@@ -1,17 +1,4 @@
-import { pick } from './utils'
-
-const compare = function(a, b) {
-  if (!a || !b) return false
-
-  if (a.length != b.length) return false
-
-  for (var i = 0, l = a.length; i < l; i++) {
-    if (a[i] !== b[i]) {
-      return false
-    }
-  }
-  return true
-}
+import { pick, compare } from './utils'
 
 const willBe = (marble, values = {}) => source => {
   const breakpoints = marble.split('-')
@@ -29,18 +16,23 @@ const willBe = (marble, values = {}) => source => {
 
       if (t === 1) {
         received.push(d)
+        const test = compare(expected, received)
+
+        if (test === compare.EQUAL || test === compare.DIFFERENT) talkback(2)
+        if (test === compare.EQUAL) resolve()
+        if (test === compare.DIFFERENT) reject()
+
         talkback(1)
       }
 
       if (t === 2) {
         received.push('|')
 
-        if (compare(expected, received)) {
-          resolve('test works!')
-        } else {
-          console.log(received, expected)
-          reject('woops!')
-        }
+        const test = compare(expected, received, true)
+
+        if (test === compare.EQUAL || test === compare.DIFFERENT) talkback(2)
+        if (test === compare.EQUAL) resolve()
+        if (test === compare.DIFFERENT) reject()
       }
     })
   })
