@@ -1,0 +1,50 @@
+{
+  "name": "@jeetiss/callbag-testing-utils",
+  "version": "0.0.1",
+  "description": "👜 Callbag operators for the best tests.",
+  "main": "dist/callbag-testing-utils.js",
+  "module": "dist/callbag-testing-utils.es.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "jest --env=node",
+    "precommit": "lint-staged",
+    "prebuild": "rimraf dist",
+    "build": "rollup -c",
+    "prepare": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeetiss/callbag-testing-utils.git"
+  },
+  "keywords": [
+    "callbag",
+    "callbags",
+    "test"
+  ],
+  "author": "Dmitry Ivakhnenko <jeetiss@ya.ru> (https://github.com/jeetiss)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeetiss/callbag-testing-utils/issues"
+  },
+  "homepage": "https://github.com/jeetiss/callbag-testing-utils#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "callbag-map": "^1.0.1",
+    "callbag-pipe": "^1.1.1",
+    "callbag-filter": "^1.0.1",
+    "callbag-subscribe": "^1.4.1",
+    "husky": "^0.14.3",
+    "jest": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.66.6",
+    "rollup-plugin-babel": "^4.0.3"
+  }
+}
