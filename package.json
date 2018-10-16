@@ -1,6 +1,6 @@
 {
   "name": "@jeetiss/callbag-testing-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "👜 Callbag operators for the best tests.",
   "main": "dist/callbag-testing-utils.js",
   "module": "dist/callbag-testing-utils.es.js",
