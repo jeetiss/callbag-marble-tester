@@ -32,6 +32,21 @@ test('listenable source did work with values', () => {
   })
 })
 
+test('listenable source did work with falsy values', () => {
+  const expected = [false, '', 0]
+  const received = []
+
+  return new Promise(resolve => {
+    subscribe({
+      next: data => received.push(data),
+      complete: () => {
+        expect(received).toEqual(expected)
+        resolve()
+      },
+    })(listenable('-a--b--c-|', { a: false, b: '', c: 0 }))
+  })
+})
+
 test('listenable source did catch error', () => {
   const expected = ['a']
   const received = []
