@@ -11,8 +11,8 @@ test('listenable source just works', () =>
 
 test('map listenable source', () =>
   pipe(
-    listenable('-a-b-c-|', { a: 1, b: 2, c: 3 }),
-    map(value => value + 1),
+    listenable('-a-b-c-|', { a: 0, b: 1, c: 2 }),
+    map(value => value + 2),
     willBe('-a-b-c-|', { a: 2, b: 3, c: 4 }),
   ))
 

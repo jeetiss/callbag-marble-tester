@@ -1,3 +1,5 @@
+import { pick } from './utils'
+
 const listenable = (marble, values = {}) => (start, sink) => {
   if (start !== 0) return
   const breakpoints = marble.split('-')
@@ -13,7 +15,7 @@ const listenable = (marble, values = {}) => (start, sink) => {
     } else if (head === 'x') {
       sink(2, { error: 'error!' })
     } else if (head !== '') {
-      sink(1, values[head] || head)
+      sink(1, pick(values, head))
     }
 
     if (teil.length > 0) {

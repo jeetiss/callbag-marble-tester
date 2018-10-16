@@ -1,3 +1,5 @@
+import { pick } from './utils'
+
 const compare = function(a, b) {
   if (!a || !b) return false
 
@@ -13,11 +15,9 @@ const compare = function(a, b) {
 
 const willBe = (marble, values = {}) => source => {
   const breakpoints = marble.split('-')
-  const expected = breakpoints
-    .filter(Boolean)
-    .map(point => values[point] || point)
-  let received = []
+  const expected = breakpoints.filter(Boolean).map(pick.bind(null, values))
 
+  let received = []
   let talkback
 
   return new Promise((resolve, reject) => {

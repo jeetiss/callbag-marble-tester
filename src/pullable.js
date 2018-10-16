@@ -1,3 +1,5 @@
+import { pick } from './utils'
+
 const pullable = (marble, values = {}) => (start, sink) => {
   if (start !== 0) return
   const breakpoints = marble.split('-').filter(Boolean)
@@ -16,7 +18,7 @@ const pullable = (marble, values = {}) => (start, sink) => {
       } else if (next === 'x') {
         sink(2, { error: 'error' })
       } else {
-        sink(1, values[next] || next)
+        sink(1, pick(values, next))
       }
     } else if (t === 2) {
       completed = true
