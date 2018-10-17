@@ -1,11 +1,11 @@
-# callbag-testing-utils
+# callbag-marble-tester
 
 Callbag utils for testing deferent operators.
 
 ## install
 
 ```
-npm i -D @jeetiss/callbag-testing-utils
+npm i -D @jeetiss/callbag-marble-tester
 ```
 
 ## Example
@@ -14,7 +14,7 @@ npm i -D @jeetiss/callbag-testing-utils
 import map from 'callbag-map'
 import pipe from 'callbag-pipe'
 
-import { listenable, willBe } from '../src'
+import { listenable, willBe } from '@jeetiss/callbag-marble-tester'
 
 test('test map operator', () =>
   pipe(

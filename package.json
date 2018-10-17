@@ -1,9 +1,9 @@
 {
-  "name": "@jeetiss/callbag-testing-utils",
-  "version": "0.0.2",
+  "name": "@jeetiss/callbag-marble-tester",
+  "version": "0.0.3",
   "description": "👜 Callbag operators for the best tests.",
-  "main": "dist/callbag-testing-utils.js",
-  "module": "dist/callbag-testing-utils.es.js",
+  "main": "dist/callbag-marble-tester.js",
+  "module": "dist/callbag-marble-tester.es.js",
   "files": [
     "dist"
   ],
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeetiss/callbag-testing-utils.git"
+    "url": "git+https://github.com/jeetiss/callbag-marble-tester.git"
   },
   "keywords": [
     "callbag",
@@ -27,9 +27,9 @@
   "author": "Dmitry Ivakhnenko <jeetiss@ya.ru> (https://github.com/jeetiss)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeetiss/callbag-testing-utils/issues"
+    "url": "https://github.com/jeetiss/callbag-marble-tester/issues"
   },
-  "homepage": "https://github.com/jeetiss/callbag-testing-utils#readme",
+  "homepage": "https://github.com/jeetiss/callbag-marble-tester#readme",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
