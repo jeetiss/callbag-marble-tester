@@ -1,4 +1,11 @@
-import { pick, compare } from './utils'
+import { pick, toMarble, compare } from './utils'
+
+const message = (expected, received) =>
+  `
+expected: ${toMarble(expected)}
+received: ${toMarble(received)}
+
+`
 
 const willBe = (marble, values = {}) => source => {
   const breakpoints = marble.split('-')
@@ -12,28 +19,18 @@ const willBe = (marble, values = {}) => source => {
       if (t === 0) {
         talkback = d
         talkback(1)
+
+        return
       }
 
-      if (t === 1) {
-        received.push(d)
-        const test = compare(expected, received)
+      received.push(t === 1 ? d : '|')
+      const test = compare(expected, received, t === 2)
 
-        if (test === compare.EQUAL || test === compare.DIFFERENT) talkback(2)
-        if (test === compare.EQUAL) resolve()
-        if (test === compare.DIFFERENT) reject()
+      if (test === compare.EQUAL || test === compare.DIFFERENT) talkback(2)
+      if (test === compare.EQUAL) resolve()
+      if (test === compare.DIFFERENT) reject(message(expected, received))
 
-        talkback(1)
-      }
-
-      if (t === 2) {
-        received.push('|')
-
-        const test = compare(expected, received, true)
-
-        if (test === compare.EQUAL || test === compare.DIFFERENT) talkback(2)
-        if (test === compare.EQUAL) resolve()
-        if (test === compare.DIFFERENT) reject()
-      }
+      if (t === 1) talkback(1)
     })
   })
 }

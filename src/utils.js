@@ -1,3 +1,4 @@
+const toMarble = values => values.join('-')
 const isDefined = value => value != null
 const pick = (obj, value) => (isDefined(obj[value]) ? obj[value] : value)
 
@@ -23,4 +24,4 @@ compare.DIFFERENT = DIFFERENT
 compare.NOT_COMPLITE = NOT_COMPLITE
 compare.EQUAL = EQUAL
 
-export { pick, isDefined, compare }
+export { toMarble, pick, isDefined, compare }
