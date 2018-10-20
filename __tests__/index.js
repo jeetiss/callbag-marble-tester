@@ -18,6 +18,6 @@ test('map listenable source', () =>
 
 test('pullable source just works', () =>
   pipe(
-    pullable('-a-c-b-|'),
+    pullable('(acb|)'),
     willBe('-a-c-b-|'),
   ))

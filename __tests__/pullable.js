@@ -6,7 +6,7 @@ test('pullable source did work', () => {
   const expected = ['a', 'b', 'c', 'd']
   const received = []
 
-  subscribe(data => received.push(data))(pullable('-a-b-c-d-|'))
+  subscribe(data => received.push(data))(pullable('(abcd|)'))
 
   expect(received).toEqual(expected)
 })
@@ -15,7 +15,7 @@ test('pullable source did work with values', () => {
   const expected = [1, 1, 2, 2]
   const received = []
 
-  subscribe(data => received.push(data))(pullable('-a-a-b-b-|', { a: 1, b: 2 }))
+  subscribe(data => received.push(data))(pullable('(aabb|)', { a: 1, b: 2 }))
 
   expect(received).toEqual(expected)
 })
@@ -28,8 +28,14 @@ test('pullable source did catch error', () => {
   subscribe({
     next: data => received.push(data),
     error,
-  })(pullable('-a------x'))
+  })(pullable('(ax)'))
 
   expect(received).toEqual(expected)
   expect(error).toHaveBeenCalled()
+})
+
+test('async pullable source did catch error', () => {
+  expect(() => {
+    subscribe()(pullable('-a-(bc)-|'))
+  }).toThrow()
 })
