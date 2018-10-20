@@ -6,8 +6,17 @@ const testCreators = {
   next: value => value,
 }
 
+const bindLastArg = (fn, arg) => (...args) => {
+  let modifiedArgs = args
+  modifiedArgs[fn.length - 1] = arg
+
+  return fn(...modifiedArgs)
+}
+
+const testParse = bindLastArg(parse, testCreators)
+
 test('async one after one', () => {
-  const { frames, type } = parse('aa|', testCreators)
+  const { frames, type } = testParse('aa|', testCreators)
 
   expect(type).toBe('async')
   expect(frames.get(0)).toEqual(['a'])
@@ -16,14 +25,14 @@ test('async one after one', () => {
 })
 
 test('sync groop', () => {
-  const { frames, type } = parse('(aa|)', testCreators)
+  const { frames, type } = testParse('(aa|)', testCreators)
 
   expect(type).toBe('sync')
   expect(frames.get(0)).toEqual(['a', 'a', 'end'])
 })
 
 test('async groop', () => {
-  const { frames, type } = parse('--(aa)--|', testCreators)
+  const { frames, type } = testParse('--(aa)--|', testCreators)
 
   expect(type).toBe('async')
   expect(frames.get(2)).toEqual(['a', 'a'])
@@ -31,7 +40,7 @@ test('async groop', () => {
 })
 
 test('async groop', () => {
-  const { frames, type } = parse('--(aa)--|', testCreators)
+  const { frames, type } = testParse('--(aa)--|', testCreators)
 
   expect(type).toBe('async')
   expect(frames.get(2)).toEqual(['a', 'a'])
@@ -39,7 +48,7 @@ test('async groop', () => {
 })
 
 test('error', () => {
-  const { frames, type } = parse('-a-a-x', testCreators)
+  const { frames, type } = testParse('-a-a-x', testCreators)
 
   expect(type).toBe('async')
   expect(frames.get(1)).toEqual(['a'])
@@ -48,14 +57,14 @@ test('error', () => {
 })
 
 test('empty', () => {
-  const { frames, type } = parse('|', testCreators)
+  const { frames, type } = testParse('|', testCreators)
 
   expect(type).toBe('sync')
   expect(frames.get(0)).toEqual(['end'])
 })
 
 test('error', () => {
-  const { frames, type } = parse('x', testCreators)
+  const { frames, type } = testParse('x', testCreators)
 
   expect(type).toBe('sync')
   expect(frames.get(0)).toEqual(['error'])
