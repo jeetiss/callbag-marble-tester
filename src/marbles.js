@@ -58,5 +58,9 @@ export const parse = (marbles, values, error, userCreators) => {
     }
   }
 
-  return { type: frameIndex > 1 ? 'async' : 'sync', frames }
+  return {
+    type: frameIndex > 1 ? 'async' : 'sync',
+    frames,
+    maxFrame: frameIndex,
+  }
 }

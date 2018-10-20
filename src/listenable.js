@@ -1,36 +1,28 @@
 import { pick } from './utils'
+import { parse } from './marbles'
 
 const listenable = (marble, values = {}) => (start, sink) => {
   if (start !== 0) return
-  const breakpoints = marble.split('-')
-  let unsubscribed = false
-  let id = null
+  const { frames, maxFrame } = parse(marble, values)
+  let timeoutId = null
 
-  const emitFirst = breakpoints => {
-    if (unsubscribed) return
-    const [head, ...teil] = breakpoints
-
-    if (head === '|') {
-      sink(2)
-    } else if (head === 'x') {
-      sink(2, { error: 'error!' })
-    } else if (head !== '') {
-      sink(1, pick(values, head))
+  const emit = frame => {
+    if (frames.has(frame)) {
+      frames.get(frame).forEach(emitter => emitter(sink))
     }
 
-    if (teil.length > 0) {
-      id = setTimeout(emitFirst, 1, teil)
+    if (frame < maxFrame) {
+      timeoutId = setTimeout(emit, 1, frame + 1)
     }
   }
 
   sink(0, t => {
     if (t === 2) {
-      unsubscribed = true
-      id !== null && clearTimeout(id)
+      timeoutId !== null && clearTimeout(timeoutId)
     }
   })
 
-  emitFirst(breakpoints)
+  emit(0)
 }
 
 export default listenable
