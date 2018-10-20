@@ -1,6 +1,6 @@
 # callbag-marble-tester
 
-Callbag utils for testing deferent operators.
+Callbag utils for testing different operators.
 
 ## install
 
