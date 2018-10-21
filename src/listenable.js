@@ -3,7 +3,7 @@ import { parse } from './marbles'
 
 const listenable = (marble, values = {}) => (start, sink) => {
   if (start !== 0) return
-  const { frames, maxFrame } = parse(marble, values)
+  const { frames, size } = parse(marble, values)
   let timeoutId = null
 
   const emit = frame => {
@@ -11,7 +11,7 @@ const listenable = (marble, values = {}) => (start, sink) => {
       frames.get(frame).forEach(emitter => emitter(sink))
     }
 
-    if (frame < maxFrame) {
+    if (frame < size) {
       timeoutId = setTimeout(emit, 1, frame + 1)
     }
   }

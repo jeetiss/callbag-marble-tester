@@ -4,9 +4,9 @@ import { parse } from './marbles'
 const pullable = (marble, values = {}) => (start, sink) => {
   if (start !== 0) return
 
-  const { frames, type } = parse(marble, values)
+  const { frames, size } = parse(marble, values)
 
-  if (type !== 'sync') throw new Error("pullable source can't be async")
+  if (size > 1) throw new Error("pullable source can't be async")
 
   const emitters = frames.get(0)
   let index = 0

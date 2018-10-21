@@ -20,7 +20,10 @@ export const parse = (marbles, values = {}, error, userCreators) => {
   let groopBuffer = []
 
   const nextFrame = () => (frameIndex += 1)
-  const set = value => frames.set(frameIndex, value)
+  const set = value => {
+    frames.set(frameIndex, value)
+    nextFrame()
+  }
 
   while (fragments.length !== 0) {
     const [head, ...teil] = fragments
@@ -45,22 +48,21 @@ export const parse = (marbles, values = {}, error, userCreators) => {
         set(groopBuffer)
         inGroop = false
         groopBuffer = []
-        nextFrame()
         continue
 
       default:
-        if (inGroop) {
-          groopBuffer.push(creators.next(pick(values, head)))
-        } else {
-          set([creators.next(pick(values, head))])
-          nextFrame()
-        }
+        inGroop
+          ? groopBuffer.push(creators.next(pick(values, head)))
+          : set([creators.next(pick(values, head))])
     }
   }
 
   return {
-    type: frameIndex > 1 ? 'async' : 'sync',
     frames,
-    maxFrame: frameIndex,
+    size: frameIndex,
   }
+}
+
+const create = ({ frames }) => {
+  let marbles = ''
 }
