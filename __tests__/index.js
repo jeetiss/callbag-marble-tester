@@ -1,5 +1,6 @@
 import map from 'callbag-map'
 import pipe from 'callbag-pipe'
+import merge from 'callbag-merge'
 
 import { listenable, pullable, willBe } from '../src'
 
@@ -24,10 +25,15 @@ test('pullable source just works', () =>
 
 test('looong test case', () =>
   pipe(
-    listenable(
-      '--a--------------------------------------------------------a---|',
+    merge(
+      listenable(
+        '--a--------------------------------------------------------a--|',
+      ),
+      listenable(
+        '--b--------------------------------------------------------b--|',
+      ),
     ),
     willBe(
-      '    --a--------------------------------------------------------a---|',
+      '  --(ab)--------------------------------------------------------(ab)--|',
     ),
   ))
