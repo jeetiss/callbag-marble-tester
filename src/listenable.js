@@ -1,3 +1,4 @@
+import { FRAME_SIZE } from './constants'
 import { pick } from './utils'
 import { parse } from './marbles'
 
@@ -12,7 +13,7 @@ const listenable = (marble, values = {}) => (start, sink) => {
     }
 
     if (frame < size) {
-      timeoutId = setTimeout(emit, 1, frame + 1)
+      timeoutId = setTimeout(emit, FRAME_SIZE, frame + 1)
     }
   }
 

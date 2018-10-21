@@ -1,38 +1,63 @@
-import { pick, toMarble, compare } from './utils'
+import { FRAME_SIZE } from './constants'
+import { pick } from './utils'
+import { create, parse, defaultCreators as creators } from './marbles'
 
 const message = (expected, received) =>
   `
-expected: ${toMarble(expected)}
-received: ${toMarble(received)}
+expected: ${expected}
+received: ${received}
 
 `
 
-const willBe = (marble, values = {}) => source => {
-  const breakpoints = marble.split('-')
-  const expected = breakpoints.filter(Boolean).map(pick.bind(null, values))
+const willBe = (marble, values = {}) => source =>
+  new Promise((resolve, reject) => {
+    let receivedFrames = new Map()
+    let frame = 0
 
-  let received = []
-  let talkback
+    const set = creator => {
+      if (receivedFrames.has(frame)) {
+        const creators = receivedFrames.get(frame)
+        creators.push(creator)
+        receivedFrames.set(frame, creators)
+      } else {
+        receivedFrames.set(frame, [creator])
+      }
+    }
 
-  return new Promise((resolve, reject) => {
+    let talkback
+    let ended = false
+    let id
+
     source(0, (t, d) => {
       if (t === 0) {
         talkback = d
         talkback(1)
+        if (!id && !ended) {
+          id = setInterval(() => (frame += 1), FRAME_SIZE)
+        }
 
         return
       }
 
-      received.push(t === 1 ? d : '|')
-      const test = compare(expected, received, t === 2)
+      if (t === 1) {
+        set(creators.next(pick(values, d)))
+        talkback(1)
+      }
 
-      if (test === compare.EQUAL || test === compare.DIFFERENT) talkback(2)
-      if (test === compare.EQUAL) resolve()
-      if (test === compare.DIFFERENT) reject(message(expected, received))
+      if (t === 2) {
+        ended = true
+        id && clearInterval(id)
+        d ? set(creators.error(d)) : set(creators.end())
+        talkback(2)
 
-      if (t === 1) talkback(1)
+        const received = create({ frames: receivedFrames, size: frame + 1 })
+        if (received === marble.trim()) {
+          resolve()
+        } else {
+          reject(message(marble.trim(), received))
+        }
+      }
     })
   })
-}
 
 export default willBe

@@ -1,17 +1,14 @@
-const isDefined = value => value != null
-const pick = (obj, value) => (isDefined(obj[value]) ? obj[value] : value)
+import { isDefined, pick } from './utils'
 
-const end = sink => sink(2)
-
-const defaultCreators = {
-  end: () => end,
+export const defaultCreators = {
+  end: () => sink => sink(2),
   error: error => sink => sink(2, isDefined(error) ? error : 'error'),
   next: value => sink => sink(1, value),
 }
 
 export const parse = (marbles, values = {}, error, userCreators) => {
   const creators = { ...defaultCreators, ...userCreators }
-  let fragments = marbles.split('')
+  let fragments = marbles.trim().split('')
 
   let frameIndex = 0
   let frames = new Map()
@@ -92,6 +89,7 @@ export const create = ({ frames, size }) => {
         .get(i)
         .map(creator => creator(sink))
         .join('')
+
       marbles += frame.length > 1 ? `(${frame})` : frame
     } else {
       marbles += '-'
