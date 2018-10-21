@@ -16,7 +16,7 @@ const bindLastArg = (fn, arg) => (...args) => {
 const testParse = bindLastArg(parse, testCreators)
 
 test('async one after one', () => {
-  const { frames, type } = testParse('aa|', testCreators)
+  const { frames, type } = testParse('aa|')
 
   expect(type).toBe('async')
   expect(frames.get(0)).toEqual(['a'])
@@ -25,14 +25,14 @@ test('async one after one', () => {
 })
 
 test('sync groop', () => {
-  const { frames, type } = testParse('(aa|)', testCreators)
+  const { frames, type } = testParse('(aa|)')
 
   expect(type).toBe('sync')
   expect(frames.get(0)).toEqual(['a', 'a', 'end'])
 })
 
 test('async groop', () => {
-  const { frames, type } = testParse('--(aa)--|', testCreators)
+  const { frames, type } = testParse('--(aa)--|')
 
   expect(type).toBe('async')
   expect(frames.get(2)).toEqual(['a', 'a'])
@@ -40,7 +40,7 @@ test('async groop', () => {
 })
 
 test('async groop', () => {
-  const { frames, type } = testParse('--(aa)--|', testCreators)
+  const { frames, type } = testParse('--(aa)--|')
 
   expect(type).toBe('async')
   expect(frames.get(2)).toEqual(['a', 'a'])
@@ -48,7 +48,7 @@ test('async groop', () => {
 })
 
 test('error', () => {
-  const { frames, type } = testParse('-a-a-x', testCreators)
+  const { frames, type } = testParse('-a-a-x')
 
   expect(type).toBe('async')
   expect(frames.get(1)).toEqual(['a'])
@@ -57,14 +57,14 @@ test('error', () => {
 })
 
 test('empty', () => {
-  const { frames, type } = testParse('|', testCreators)
+  const { frames, type } = testParse('|')
 
   expect(type).toBe('sync')
   expect(frames.get(0)).toEqual(['end'])
 })
 
 test('error', () => {
-  const { frames, type } = testParse('x', testCreators)
+  const { frames, type } = testParse('x')
 
   expect(type).toBe('sync')
   expect(frames.get(0)).toEqual(['error'])
