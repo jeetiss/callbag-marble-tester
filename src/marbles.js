@@ -9,7 +9,7 @@ const defaultCreators = {
   next: value => sink => sink(1, value),
 }
 
-export const parse = (marbles, values, error, userCreators) => {
+export const parse = (marbles, values = {}, error, userCreators) => {
   const creators = { ...defaultCreators, ...userCreators }
   let fragments = marbles.split('')
 
