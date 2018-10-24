@@ -6,8 +6,8 @@ import { listenable, pullable, willBe } from '../src'
 
 test('listenable source just works', () =>
   pipe(
-    listenable('-a-b-c-|'),
-    willBe('    -a-b-c-|'),
+    listenable('-q-w-c-|'),
+    willBe('    -q-w-c-|'),
   ))
 
 test('map listenable source', () =>
@@ -19,8 +19,8 @@ test('map listenable source', () =>
 
 test('pullable source just works', () =>
   pipe(
-    pullable('(abc|)'),
-    willBe('  (abc|)'),
+    pullable('(czc|)'),
+    willBe('  (czc|)'),
   ))
 
 test('looong test case', () =>
@@ -36,4 +36,42 @@ test('looong test case', () =>
     willBe(
       '  --(ab)--------------------------------------------------------(ab)--|',
     ),
+  ))
+
+test('compare different events', () =>
+  expect(
+    pipe(
+      listenable('qaq|'),
+      willBe('    qcq|'),
+    ),
+  ).rejects.toBeDefined())
+
+test('compare different time of events', () =>
+  expect(
+    pipe(
+      listenable('----q-a-q-|'),
+      willBe('    ----q-a-q|'),
+    ),
+  ).rejects.toBeDefined())
+
+test('compare different time of events', () =>
+  expect(
+    pipe(
+      listenable('----q-a-q-|'),
+      willBe('    ---q-a-q-|'),
+    ),
+  ).rejects.toBeDefined())
+
+test('compare different time of events', () =>
+  expect(
+    pipe(
+      listenable('----q-a-q-'),
+      willBe('    ---q-a-q-'),
+    ),
+  ).rejects.toBeDefined())
+
+test('inf listenable source works', () =>
+  pipe(
+    listenable('-q-w-c-'),
+    willBe('    -q-w-c-'),
   ))

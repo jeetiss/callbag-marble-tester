@@ -98,3 +98,27 @@ export const create = ({ frames, size }) => {
 
   return marbles
 }
+
+export const compareFrames = (frameA, frameB) => {
+  if (frameA == null && frameB == null) {
+    return true
+  }
+
+  if (typeof frameA !== typeof frameB) {
+    return false
+  }
+
+  if (frameA.length !== frameB.length) {
+    return false
+  }
+
+  const sink = (...args) => args.join()
+
+  for (let i = 0, len = frameB.length; i < len; ++i) {
+    if (frameA[i](sink) !== frameB[i](sink)) {
+      return false
+    }
+  }
+
+  return true
+}

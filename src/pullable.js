@@ -1,4 +1,3 @@
-import { pick } from './utils'
 import { parse } from './marbles'
 
 const pullable = (marble, values = {}) => (start, sink) => {
