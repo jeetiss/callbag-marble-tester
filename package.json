@@ -1,6 +1,6 @@
 {
   "name": "@jeetiss/callbag-marble-tester",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "👜 Callbag operators for the best tests.",
   "main": "dist/callbag-marble-tester.js",
   "module": "dist/callbag-marble-tester.es.js",
