@@ -33,44 +33,47 @@ const willBe = (marble, values = {}) => source =>
     let ended = false
     let id
 
+    const lastCheck = () => {
+      if (
+        frame + 1 === size &&
+        create({ frames: receivedFrames, size }) === create({ frames, size })
+      ) {
+        resolve()
+      } else {
+        reject(message(frames, receivedFrames, size))
+      }
+    }
+
     source(0, (t, d) => {
-      if (t === 0) {
-        talkback = d
-        talkback(1)
-        if (!id && !ended) {
-          id = setInterval(() => {
-            if (!compareFrames(receivedFrames.get(frame), frames.get(frame))) {
-              clearInterval(id)
-              talkback(2)
-              reject(message(frames, receivedFrames, frame + 1))
-            }
-
-            frame += 1
-          }, FRAME_SIZE)
-        }
-
-        return
-      }
-
-      if (t === 1) {
-        set(creators.next(pick(values, d)))
-        talkback(1)
-      }
+      if (t === 0) talkback = d
+      if (t === 1) set(creators.next(pick(values, d)))
+      if (t === 1 || t === 0) talkback(1)
 
       if (t === 2) {
         ended = true
         id && clearInterval(id)
         d ? set(creators.error(d)) : set(creators.end())
-        talkback(2)
+        talkback(2, d)
 
-        if (
-          create({ frames: receivedFrames, size: frame + 1 }) ===
-          create({ frames, size })
-        ) {
-          resolve()
-        } else {
-          reject(message(frames, receivedFrames, frame + 1))
-        }
+        lastCheck()
+      }
+
+      if (t === 0 && !ended) {
+        id = setInterval(() => {
+          if (!compareFrames(receivedFrames.get(frame), frames.get(frame))) {
+            clearInterval(id)
+            talkback(2)
+            reject(message(frames, receivedFrames, frame + 1))
+          }
+
+          if (size === frame + 1) {
+            clearInterval(id)
+            talkback(2)
+            lastCheck()
+          }
+
+          frame += 1
+        }, FRAME_SIZE)
       }
     })
   })
